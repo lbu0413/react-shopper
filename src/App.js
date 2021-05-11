@@ -1,25 +1,62 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import { Navbar, Nav, NavDropdown, Jumbotron, Button } from "react-bootstrap";
+import "./App.css";
+import itemsData from "./data";
+import Saleitem from "./components/Saleitem";
+import Detail from "./components/Detail";
+import { Link, Route, Switch } from "react-router-dom";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+	const [items, setItems] = useState(itemsData);
+
+	return (
+		<div className="App">
+			<Navbar bg="light" expand="lg">
+				<Navbar.Brand href="#home">Wook's Shop</Navbar.Brand>
+				<Navbar.Toggle aria-controls="basic-navbar-nav" />
+				<Navbar.Collapse id="basic-navbar-nav">
+					<Nav className="ml-auto">
+						<Nav.Link>
+							<Link to="/">Home</Link>
+						</Nav.Link>
+						<Nav.Link>
+							<Link to="/detail">Detail</Link>
+						</Nav.Link>
+						<NavDropdown title="Dropdown" id="basic-nav-dropdown">
+							<NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
+							<NavDropdown.Item href="#action/3.2">
+								Another action
+							</NavDropdown.Item>
+							<NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
+							<NavDropdown.Divider />
+							<NavDropdown.Item href="#action/3.4">
+								Separated link
+							</NavDropdown.Item>
+						</NavDropdown>
+					</Nav>
+				</Navbar.Collapse>
+			</Navbar>
+			<Switch>
+				<Route exact path="/">
+					<Jumbotron className="background">
+						<h1>20% Season OFF</h1>
+						<p>
+							<Button variant="primary">Learn more</Button>
+						</p>
+					</Jumbotron>
+					<div className="container">
+						<div className="row">
+							{items.map((item, index) => {
+								return <Saleitem items={item} index={index} />;
+							})}
+						</div>
+					</div>
+				</Route>
+				<Route path="/detail" component={Detail}></Route>
+				<Route path="/:id"></Route>
+			</Switch>
+		</div>
+	);
 }
 
 export default App;
