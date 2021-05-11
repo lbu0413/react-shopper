@@ -16,11 +16,11 @@ function App() {
 				<Navbar.Toggle aria-controls="basic-navbar-nav" />
 				<Navbar.Collapse id="basic-navbar-nav">
 					<Nav className="ml-auto">
-						<Nav.Link>
-							<Link to="/">Home</Link>
+						<Nav.Link as={Link} to="/">
+							Home
 						</Nav.Link>
-						<Nav.Link>
-							<Link to="/detail">Detail</Link>
+						<Nav.Link as={Link} to="/detail">
+							Detail
 						</Nav.Link>
 						<NavDropdown title="Dropdown" id="basic-nav-dropdown">
 							<NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
@@ -47,12 +47,14 @@ function App() {
 					<div className="container">
 						<div className="row">
 							{items.map((item, index) => {
-								return <Saleitem items={item} index={index} />;
+								return <Saleitem items={item} index={index} key={index} />;
 							})}
 						</div>
 					</div>
 				</Route>
-				<Route path="/detail" component={Detail}></Route>
+				<Route path="/detail/:id">
+					<Detail items={items} />
+				</Route>
 				<Route path="/:id"></Route>
 			</Switch>
 		</div>
