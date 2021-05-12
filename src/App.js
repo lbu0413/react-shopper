@@ -5,14 +5,16 @@ import itemsData from "./data";
 import Saleitem from "./components/Saleitem";
 import Detail from "./components/Detail";
 import { Link, Route, Switch } from "react-router-dom";
+import axios from "axios";
 
 function App() {
 	const [items, setItems] = useState(itemsData);
+	const [stock, setStock] = useState([10, 11, 12]);
 
 	return (
 		<div className="App">
 			<Navbar bg="light" expand="lg">
-				<Navbar.Brand href="#home">Wook's Shop</Navbar.Brand>
+				<Navbar.Brand href="/">Wook's Shop</Navbar.Brand>
 				<Navbar.Toggle aria-controls="basic-navbar-nav" />
 				<Navbar.Collapse id="basic-navbar-nav">
 					<Nav className="ml-auto">
@@ -50,10 +52,22 @@ function App() {
 								return <Saleitem items={item} index={index} key={index} />;
 							})}
 						</div>
+						<button
+							className="btn btn-secondary"
+							onClick={() => {
+								axios
+									.get("https://codingapple1.github.io/shop/data2.json")
+									.then((res) => {
+										setItems([...items, ...res.data]);
+									})
+									.catch((err) => console.log(err));
+							}}>
+							more items
+						</button>
 					</div>
 				</Route>
 				<Route path="/detail/:id">
-					<Detail items={items} />
+					<Detail items={items} stock={stock} setStock={setStock} />
 				</Route>
 				<Route path="/:id"></Route>
 			</Switch>

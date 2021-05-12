@@ -6,6 +6,7 @@ const Saleitem = ({ items, index }) => {
 			<img src={items.img} alt="macbook" width="100%" height="130px" />
 			<h4>{items.title}</h4>
 			<p>{items.content}</p>
+			<p style={{ color: "skyblue" }}>{items.price}</p>
 		</div>
 	);
 };

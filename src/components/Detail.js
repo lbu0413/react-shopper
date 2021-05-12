@@ -9,10 +9,13 @@ function Detail(props) {
 	let history = useHistory();
 
 	useEffect(() => {
-		setTimeout(() => {
+		let timer = setTimeout(() => {
 			setTwoSec(false);
 		}, 2000);
-	});
+		return () => {
+			clearTimeout(timer);
+		};
+	}, []);
 	const [twoSec, setTwoSec] = useState(true);
 
 	return (
@@ -35,7 +38,19 @@ function Detail(props) {
 					<h4 className="pt-5">{foundItem.title}</h4>
 					<p>{foundItem.content}</p>
 					<p>{foundItem.price}</p>
-					<button className="btn btn-danger">주문하기</button>
+					<Info stock={props.stock}></Info>
+					<button
+						className="btn btn-danger"
+						onClick={() => {
+							let newStock = [...props.stock];
+							newStock[0]--;
+							if (newStock[0] === 0) {
+								return 0;
+							}
+							props.setStock(newStock);
+						}}>
+						주문하기
+					</button>
 					<button
 						onClick={() => {
 							history.push("/");
@@ -47,6 +62,10 @@ function Detail(props) {
 			</div>
 		</div>
 	);
+}
+
+function Info({ stock }) {
+	return <p>Stock: {stock[0]}</p>;
 }
 
 export default Detail;
