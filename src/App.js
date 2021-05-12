@@ -6,6 +6,8 @@ import Saleitem from "./components/Saleitem";
 import Detail from "./components/Detail";
 import { Link, Route, Switch } from "react-router-dom";
 import axios from "axios";
+import Cart from "./components/Cart.js";
+export let stockContext = React.createContext();
 
 function App() {
 	const [items, setItems] = useState(itemsData);
@@ -46,12 +48,14 @@ function App() {
 							<Button variant="primary">Learn more</Button>
 						</p>
 					</Jumbotron>
+
 					<div className="container">
 						<div className="row">
 							{items.map((item, index) => {
 								return <Saleitem items={item} index={index} key={index} />;
 							})}
 						</div>
+
 						<button
 							className="btn btn-secondary"
 							onClick={() => {
@@ -66,10 +70,15 @@ function App() {
 						</button>
 					</div>
 				</Route>
-				<Route path="/detail/:id">
-					<Detail items={items} stock={stock} setStock={setStock} />
+				<Route path="/cart">
+					<Cart />
 				</Route>
-				<Route path="/:id"></Route>
+				<stockContext.Provider value={stock}>
+					<Route path="/detail/:id">
+						<Detail items={items} stock={stock} setStock={setStock} />
+					</Route>
+					<Route path="/:id"></Route>
+				</stockContext.Provider>
 			</Switch>
 		</div>
 	);

@@ -1,9 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import styled from "styled-components";
 import "./Detail.scss";
+import { stockContext } from "../App.js";
+import { Nav } from "react-bootstrap";
+import { CSSTransition } from "react-transition-group";
 
 function Detail(props) {
+	let stock = useContext(stockContext);
+
 	let { id } = useParams();
 	let foundItem = props.items.find((item) => item.id == id);
 	let history = useHistory();
@@ -17,6 +22,8 @@ function Detail(props) {
 		};
 	}, []);
 	const [twoSec, setTwoSec] = useState(true);
+	const [tab, setTab] = useState(0);
+	const [animation, setAnimation] = useState(false);
 
 	return (
 		<div className="container">
@@ -60,8 +67,46 @@ function Detail(props) {
 					</button>
 				</div>
 			</div>
+
+			<Nav className="mt-5" variant="tabs" defaultActiveKey="link-0">
+				<Nav.Item>
+					<Nav.Link
+						eventKey="link-0"
+						onClick={() => {
+							setAnimation(false);
+							setTab(0);
+						}}>
+						Option 2
+					</Nav.Link>
+				</Nav.Item>
+				<Nav.Item>
+					<Nav.Link
+						eventKey="link-1"
+						onClick={() => {
+							setAnimation(false);
+							setTab(1);
+						}}>
+						Disabled
+					</Nav.Link>
+				</Nav.Item>
+			</Nav>
+			<CSSTransition in={animation} classNames="wow" timeout={500}>
+				<TabContent tab={tab} setAnimation={setAnimation} />
+			</CSSTransition>
 		</div>
 	);
+}
+
+function TabContent({ tab, setAnimation }) {
+	useEffect(() => {
+		setAnimation(true);
+	});
+	if (tab === 0) {
+		return <div>contents for 0</div>;
+	}
+	if (tab === 1) {
+		return <div>contents for 1</div>;
+	}
 }
 
 function Info({ stock }) {
